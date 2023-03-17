@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Footer, Header, ThemeBtn } from "./common";
 import Image from "next/image";
@@ -8,16 +9,93 @@ import {
   FaLinkedin,
   FaInstagram,
 } from "react-icons/fa";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import heroImg from "./assets/hero.png";
 import logo from "./assets/logo.png";
 import phone from "./assets/Phone.svg";
 
 function page() {
+  const [loading, setLoading] = React.useState(false);
+
+  const [userData, setUserData] = React.useState({
+    name: "",
+    email: "",
+  });
+
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
+  }, [error]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!userData.name || !userData.email) {
+      setError("Please fill all the fields!!!");
+      setLoading(false);
+    } else {
+      axios
+        .post(
+          "https://vocallybackend.cyclic.app/api/v1/user",
+          JSON.stringify(userData)
+        )
+        .then((res) => {
+          console.log(res.data);
+          toast.success("Submitted Successfully!!!", {
+            position: "top-center",
+            autoClose: 3000,
+            theme: "dark",
+          });
+          setLoading(false);
+          setUserData({ name: "", email: "" });
+        })
+        .catch((err) => {
+          console.table(err.response.data.email);
+          setLoading(false);
+          if (err.response) {
+            const statusCode = err.response.status;
+            if (statusCode === 400) {
+              const errorMessage = err.response.data.name;
+              toast.error(errorMessage, {
+                position: "top-center",
+                autoClose: 3000,
+                theme: "dark",
+              });
+            } else {
+              toast.error(`Server Error: ${statusCode}`, {
+                position: "top-center",
+                autoClose: 3000,
+                theme: "dark",
+              });
+            }
+          } else {
+            toast.error("Network Error", {
+              position: "top-center",
+              autoClose: 3000,
+              theme: "dark",
+            });
+          }
+        });
+    }
+  };
+
   return (
     <div className="bg-[#0F141D] pt-8">
       <Header />
-
+      <ToastContainer />
       {/* Hero */}
       <div className="hero flex flex-col items-center py-16 px-[5%]">
         <div className="hero_top flex-col lg:flex lg:flex-row">
@@ -29,18 +107,37 @@ function page() {
               Open Auto Soothes the hassle of maintaining your vehicle and helps
               you deal with unexpected repairs worry-free.
             </p>
-            <form className="flex flex-col md:items-start items-center">
+            <form
+              className="flex flex-col md:items-start items-center"
+              onSubmit={handleSubmit}
+            >
               <input
                 type="text"
                 placeholder="Enter Your Name"
-                className="border-[1px]  border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-12 bg-transparent w-[60%] placeholder:text-gray-500 focus:outline-purple-500"
+                value={userData.name}
+                onChange={(e) =>
+                  setUserData({ ...userData, name: e.target.value })
+                }
+                className="border-[1px]  border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-12 bg-transparent w-[60%] 
+                text-white
+                placeholder:text-gray-500 focus:outline-purple-500"
               />
               <input
                 type="email"
                 placeholder="Enter Your Email"
-                className="border-[1px]  border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-4 bg-transparent placeholder:text-gray-500 focus:outline-purple-500 w-[60%]"
+                value={userData.email}
+                onChange={(e) => {
+                  setUserData({ ...userData, email: e.target.value });
+                }}
+                className="border-[1px] 
+                text-white
+                border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-4 bg-transparent placeholder:text-gray-500 focus:outline-purple-500 w-[60%]"
               />
-              <ThemeBtn title="Submit" theme="dark" />
+              {loading ? (
+                <ThemeBtn title="Submitting..." theme="light" />
+              ) : (
+                <ThemeBtn title="Submit" theme="dark" />
+              )}
             </form>
           </div>
           <div className="hero_right md:mt-0 mt-12">
@@ -108,7 +205,7 @@ function page() {
             repellat veniam ducimus maiores sunt cum velit similique. Facilis
             hic, ipsam,
           </p>
-          <ThemeBtn title="Learn More" theme="light" />
+          <ThemeBtn title="Learn More" theme="dark" />
         </div>
       </div>
 
