@@ -29,7 +29,7 @@ function page() {
               Open Auto Soothes the hassle of maintaining your vehicle and helps
               you deal with unexpected repairs worry-free.
             </p>
-            <form className="flex md:justify-center flex-col md:items-center items-start justify-start">
+            <form className="flex flex-col md:items-start items-center">
               <input
                 type="text"
                 placeholder="Enter Your Name"
