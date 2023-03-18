@@ -1,4 +1,5 @@
 import "./globals.css";
+// import "@fontsource/open-sans";
 
 export const metadata = {
   title: "Vocally",
