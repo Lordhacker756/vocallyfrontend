@@ -3,11 +3,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enabling smooth scrolling and setting global font family */
 html {
   scroll-behavior: smooth;
   font-family: "Open Sans", sans-serif;
 }
 
+/* Styling scrollbar */
+body {
+  --scroll-size: 6px;
+  --scroll-track: black;
+  --scroll-thumb-color: grey;
+}
+
+body::-webkit-scrollbar {
+  width: var(--scroll-size, 10px);
+  height: var(--scroll-size, 10px);
+}
+body::-webkit-scrollbar-track {
+  background-color: var(--scroll-track, transparent);
+  border-radius: var(--scroll-track-radius, var(--scroll-radius));
+}
+body::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb-color, grey);
+  background-image: var(--scroll-thumb, none);
+  border-radius: var(--scroll-thumb-radius, var(--scroll-radius));
+}
+
+/* levitating animation */
 @keyframes levitate {
   0% {
     transform: translateY(0);

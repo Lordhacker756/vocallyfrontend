@@ -1,5 +1,6 @@
 import React from "react";
 
+// Button component that can be used throughout the app
 function ThemeBtn({ title, theme }: { title: string; theme: string }) {
   const styles =
     theme === "dark"

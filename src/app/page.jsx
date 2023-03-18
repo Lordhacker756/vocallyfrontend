@@ -30,6 +30,7 @@ function page() {
 
   const [error, setError] = useState(null);
 
+  // To show error toast on error state change
   useEffect(() => {
     if (error) {
       toast.error(error, {
@@ -43,9 +44,12 @@ function page() {
     }
   }, [error]);
 
+  // To handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // Validations
     if (!userData.name || !userData.email) {
       setError("Please fill all the fields!!!");
       setLoading(false);
@@ -61,6 +65,7 @@ function page() {
       );
       setLoading(false);
     } else {
+      // API call
       fetch("https://vocallybackend.cyclic.app/api/v1/user", {
         method: "post",
         headers: {
@@ -68,7 +73,6 @@ function page() {
           "Content-Type": "application/json",
         },
 
-        //make sure to serialize your JSON body
         body: JSON.stringify({
           name: userData.name,
           email: userData.email,
@@ -105,9 +109,10 @@ function page() {
   };
 
   return (
-    <div className="bg-[#0F141D] pt-8">
+    <div className="bg-[#0F141D] pt-8 page_container">
       <Header />
       <ToastContainer />
+
       {/* Hero */}
       <div className="hero flex flex-col items-center py-16 px-[5%]">
         <div className="hero_top flex-col lg:flex lg:flex-row">
