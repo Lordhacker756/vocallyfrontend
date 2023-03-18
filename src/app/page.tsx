@@ -47,47 +47,45 @@ function page() {
       setError("Please fill all the fields!!!");
       setLoading(false);
     } else {
-      axios
-        .post(
-          "https://vocallybackend.cyclic.app/api/v1/user",
-          JSON.stringify(userData)
-        )
-        .then((res) => {
-          console.log(res.data);
-          toast.success("Submitted Successfully!!!", {
+      fetch("https://vocallybackend.cyclic.app/api/v1/user", {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+
+        //make sure to serialize your JSON body
+        body: JSON.stringify({
+          name: userData.name,
+          email: userData.email,
+        }),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            toast.success("Successfully Subscribed", {
+              position: "top-center",
+              autoClose: 3000,
+              theme: "dark",
+            });
+            setLoading(false);
+            setUserData({ name: "", email: "" });
+          } else if (response.status === 400) {
+            toast.error("User Already Exists!", {
+              position: "top-center",
+              autoClose: 3000,
+              theme: "dark",
+            });
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Something went wrong", {
             position: "top-center",
             autoClose: 3000,
             theme: "dark",
           });
           setLoading(false);
-          setUserData({ name: "", email: "" });
-        })
-        .catch((err) => {
-          console.table(err.response.data.email);
-          setLoading(false);
-          if (err.response) {
-            const statusCode = err.response.status;
-            if (statusCode === 400) {
-              const errorMessage = err.response.data.name;
-              toast.error(errorMessage, {
-                position: "top-center",
-                autoClose: 3000,
-                theme: "dark",
-              });
-            } else {
-              toast.error(`Server Error: ${statusCode}`, {
-                position: "top-center",
-                autoClose: 3000,
-                theme: "dark",
-              });
-            }
-          } else {
-            toast.error("Network Error", {
-              position: "top-center",
-              autoClose: 3000,
-              theme: "dark",
-            });
-          }
         });
     }
   };
