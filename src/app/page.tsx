@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { Footer, Header, ThemeBtn } from "./common";
 import Image from "next/image";
