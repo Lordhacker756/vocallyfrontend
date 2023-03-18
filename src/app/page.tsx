@@ -41,7 +41,7 @@ function page() {
     }
   }, [error]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
     if (!userData.name || !userData.email) {
