@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Footer, Header, ThemeBtn } from "./common";
 import Image from "next/image";
 import {
@@ -18,16 +18,16 @@ import logo from "./assets/logo.png";
 import phone from "./assets/Phone.svg";
 
 function page() {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [userData, setUserData] = React.useState({
+  const [userData, setUserData] = useState({
     name: "",
     email: "",
   });
 
-  const [error, setError] = React.useState(null);
+  const [error, setError] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       toast.error(error, {
         position: "top-center",
