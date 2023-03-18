@@ -1,7 +1,10 @@
 "use client";
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { Footer, Header, ThemeBtn } from "./common";
 import Image from "next/image";
+import validator from "validator";
+
 import {
   FaFacebookF,
   FaTwitter,
@@ -45,6 +48,15 @@ function page() {
     setLoading(true);
     if (!userData.name || !userData.email) {
       setError("Please fill all the fields!!!");
+      setLoading(false);
+    } else if (!validator.isEmail(userData.email)) {
+      setError("Please enter a valid email!!!");
+      setLoading(false);
+    } else if (userData.name.length < 3) {
+      setError("Name should be atleast 3 characters long!!!");
+      setLoading(false);
+    } else if (!/^[A-Za-z\b]+$/.test(userData.name)) {
+      setError("Please enter only alphabetical characters");
       setLoading(false);
     } else {
       fetch("https://vocallybackend.cyclic.app/api/v1/user", {
@@ -116,7 +128,7 @@ function page() {
                 onChange={(e) =>
                   setUserData({ ...userData, name: e.target.value })
                 }
-                className="border-[1px]  border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-12 bg-transparent w-[60%] 
+                className="border-[1px]  border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-12 bg-transparent w-[100%] 
                 text-white
                 placeholder:text-gray-500 focus:outline-purple-500"
               />
@@ -129,7 +141,7 @@ function page() {
                 }}
                 className="border-[1px] 
                 text-white
-                border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-4 bg-transparent placeholder:text-gray-500 focus:outline-purple-500 w-[60%]"
+                border-gray-700 rounded-full lg:w-[60%] px-4 py-2 mt-4 bg-transparent placeholder:text-gray-500 focus:outline-purple-500 w-[100%]"
               />
               {loading ? (
                 <ThemeBtn title="Submitting..." theme="light" />
@@ -191,11 +203,11 @@ function page() {
             alt="phone"
           />
         </div>
-        <div className="cta_right lg:w-[50%] flex flex-col items-center justify-center">
+        <div className="cta_right lg:w-[50%] flex flex-col items-center lg:items-start justify-center">
           <h2 className="text-5xl text-gray-300 font-bold lg:w-[50% lg:text-left text-center">
             Focused on Time Saving
           </h2>
-          <p className="text-gray-500 my-6 lg:text-left text-center">
+          <p className="text-gray-500 my-6 lg:mt-6 lg:mb-2 lg:text-left text-center">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla sed
             placeat labore maxime nihil, deserunt nostrum? Corrupti, accusantium
             pariatur? Quos veniam, nostrum recusandae repellat natus ipsa facere
@@ -203,7 +215,7 @@ function page() {
             repellat veniam ducimus maiores sunt cum velit similique. Facilis
             hic, ipsam,
           </p>
-          <ThemeBtn title="Learn More" theme="dark" />
+          <ThemeBtn title="Download the Mobile App" theme="dark" />
         </div>
       </div>
 
