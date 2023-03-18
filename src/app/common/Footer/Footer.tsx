@@ -48,7 +48,7 @@ function Footer() {
             <p className="text-gray-400 text-sm">services@openauto.ca</p>
           </div>
         </div>
-        <div className="social_links flex gap-3 lg:mt-4 mt-6 justify-between">
+        <div className="social_links flex gap-3 lg:mt-4 mt-6 lg:justify-end justify-between">
           <FaFacebookF
             className="text-gray-200 cursor-pointer hover:text-purple-600 hover:scale-[1.05] transition-all ease-in"
             size={20}
